@@ -1,5 +1,12 @@
 import requests
+from bs4 import BeautifulSoup
 
-indeed_result = requests.get('https://kr.indeed.com/%EC%B7%A8%EC%97%85?as_and=python&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&salary=&radius=25&l=%EB%8C%80%EC%A0%84&fromage=any&limit=50&sort=&psf=advsrch&from=advancedsearch')
+indeed_result = requests.get('https://kr.indeed.com/jobs?q=python&l=')
+indeed_soup = BeautifulSoup(indeed_result.text, 'html.parser')
 
-print(indeed_result)
+pagination = indeed_soup.find('div', {'class' : 'pagination'})
+pages = pagination.find_all('a')
+spans = []
+for page in pages:
+    spans.append(page.find('span'))
+spans = spans[:-1]
