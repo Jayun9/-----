@@ -6,7 +6,7 @@ URL = f'https://kr.indeed.com/%EC%B7%A8%EC%97%85?as_and=python&limit={LIMIT}'
 # 'https://kr.indeed.com/%EC%B7%A8%EC%97%85?as_and=python&limit=50'
 
 
-def extract_pages():
+def get_last_pages():
     result = requests.get(URL)
     soup = BeautifulSoup(result.text, 'html.parser')
     pagination = soup.find('div', {'class': 'pagination'})
@@ -45,7 +45,7 @@ def extract_job(html):
 def extract_indeed_jobs(last_page):
     jobs = []
     for page in range(last_page):
-        print(f'{page+1}페이지를 스크래핑 하는 중')
+        print(f'indeed{page+1}페이지를 스크래핑 하는 중')
         result = requests.get(f'{URL}&start={page*LIMIT}')
         soup = BeautifulSoup(result.text, 'html.parser')
         results = soup.find_all("div", {'class': 'jobsearch-SerpJobCard'})
@@ -55,7 +55,7 @@ def extract_indeed_jobs(last_page):
     return jobs
 
 def get_jobs():
-    last_page = extract_pages()
+    last_page = get_last_pages()
     jobs = extract_indeed_jobs(last_page)
     return jobs
 
